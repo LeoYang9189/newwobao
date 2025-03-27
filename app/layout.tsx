@@ -1,21 +1,34 @@
-import './globals.css';
-import { Inter } from 'next/font/google';
+import type { Metadata } from "next";
+import { Inter } from "next/font/google";
+import "./globals.css";
 
-const inter = Inter({ subsets: ['latin'] });
+const inter = Inter({
+  subsets: ["latin"],
+  variable: "--font-inter",
+});
 
-export const metadata = {
-  title: 'AI 对话助手',
-  description: '基于 Next.js 和 Ant Design 的 AI 对话应用',
+export const metadata: Metadata = {
+  title: "AI沃宝 - 智能物流助手",
+  description: "基于Cargoware云物流平台设计的智能助手方案",
+  icons: {
+    icon: '/logo.png',
+    shortcut: '/logo.png',
+    apple: '/logo.png',
+  },
 };
 
 export default function RootLayout({
   children,
-}: {
+}: Readonly<{
   children: React.ReactNode;
-}) {
+}>) {
   return (
-    <html lang="zh-CN">
-      <body className={inter.className}>{children}</body>
+    <html lang="zh">
+      <head>
+        <link rel="icon" href="/logo.png" />
+        <link rel="apple-touch-icon" href="/logo.png" />
+      </head>
+      <body className={`${inter.variable} font-sans`}>{children}</body>
     </html>
   );
 } 
