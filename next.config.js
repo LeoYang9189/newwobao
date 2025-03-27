@@ -9,11 +9,7 @@ const nextConfig = {
     return [
       {
         source: '/',
-        destination: '/page',
-      },
-      {
-        source: '/:path*',
-        destination: '/:path*',
+        destination: '/src/app/page',
       }
     ];
   },
