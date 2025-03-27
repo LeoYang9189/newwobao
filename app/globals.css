@@ -1,0 +1,92 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer components {
+  .side-menu-item {
+    @apply w-full text-left p-3 rounded-lg transition-all duration-200 hover:bg-blue-50 hover:text-blue-500;
+  }
+}
+
+:root {
+  --foreground-rgb: 0, 0, 0;
+  --background-start-rgb: 255, 255, 255;
+  --background-end-rgb: 255, 255, 255;
+}
+
+body {
+  color: rgb(var(--foreground-rgb));
+  background: #fafafa;
+}
+
+/* Ant Design 样式覆盖 */
+.ant-layout {
+  background: transparent !important;
+}
+
+.ant-layout-sider {
+  box-shadow: 0 1px 2px 0 rgba(0, 0, 0, 0.03), 0 1px 6px -1px rgba(0, 0, 0, 0.02), 0 2px 4px 0 rgba(0, 0, 0, 0.02) !important;
+}
+
+.ant-btn-primary {
+  background: #1677ff !important;
+}
+
+.ant-input-lg {
+  border-radius: 8px !important;
+  padding: 8px 16px !important;
+}
+
+.ant-btn-lg {
+  border-radius: 8px !important;
+  height: 42px !important;
+  padding: 8px 16px !important;
+}
+
+/* 自定义滚动条样式 */
+::-webkit-scrollbar {
+  width: 4px;
+  height: 4px;
+}
+
+::-webkit-scrollbar-track {
+  background: transparent;
+}
+
+::-webkit-scrollbar-thumb {
+  background: #e6e6e6;
+  border-radius: 2px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: #d4d4d4;
+}
+
+/* 自定义样式 */
+.message-bubble {
+  box-shadow: 0 1px 2px 0 rgba(0, 0, 0, 0.05);
+  border: 1px solid #f0f0f0;
+}
+
+.message-bubble.user {
+  background: linear-gradient(135deg, #1677ff 0%, #4096ff 100%);
+  border: none;
+  box-shadow: 0 2px 4px rgba(22, 119, 255, 0.1);
+}
+
+.side-menu-item:hover {
+  box-shadow: 0 1px 2px 0 rgba(0, 0, 0, 0.05);
+}
+
+/* 自定义样式 */
+.trigger {
+  padding: 0 24px;
+  font-size: 18px;
+  line-height: 64px;
+  cursor: pointer;
+  transition: color 0.3s;
+}
+
+.trigger:hover {
+  color: #1677ff;
+} 
