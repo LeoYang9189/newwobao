@@ -9,7 +9,7 @@ const nextConfig = {
     return [
       {
         source: '/',
-        destination: '/src/app/page',
+        destination: '/app/page',
       }
     ];
   },
