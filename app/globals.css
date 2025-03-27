@@ -89,4 +89,83 @@ body {
 
 .trigger:hover {
   color: #1677ff;
+}
+
+.markdown-content table {
+  width: 100%;
+  border-collapse: collapse;
+  margin: 1rem 0;
+  font-size: 0.9em;
+}
+
+.markdown-content th,
+.markdown-content td {
+  padding: 8px 12px;
+  text-align: left;
+  border-bottom: 1px solid #e5e7eb;
+}
+
+.markdown-content th {
+  background-color: #f9fafb;
+  font-weight: 600;
+  color: #374151;
+}
+
+.markdown-content tr:hover {
+  background-color: #f9fafb;
+}
+
+.markdown-content a {
+  color: #1677ff;
+  text-decoration: none;
+}
+
+.markdown-content a:hover {
+  text-decoration: underline;
+}
+
+/* 许愿弹窗样式 */
+.wish-modal .ant-modal-content {
+  border-radius: 16px;
+  overflow: hidden;
+}
+
+.wish-modal .ant-modal-header {
+  padding: 20px 24px;
+  border-bottom: 1px solid #f0f0f0;
+  margin-bottom: 0;
+}
+
+.wish-modal .ant-modal-body {
+  padding: 24px;
+}
+
+.wish-modal .ant-modal-footer {
+  padding: 16px 24px;
+  border-top: 1px solid #f0f0f0;
+}
+
+.wish-modal .ant-select-selector {
+  border-radius: 8px !important;
+}
+
+.wish-modal .ant-input {
+  border-radius: 8px;
+}
+
+.wish-modal .ant-btn {
+  border-radius: 6px;
+  height: 36px;
+  padding: 0 20px;
+}
+
+.wish-modal .ant-modal-close {
+  top: 18px;
+  right: 20px;
+}
+
+.wish-modal .ant-modal-close-x {
+  width: 36px;
+  height: 36px;
+  line-height: 36px;
 } 
