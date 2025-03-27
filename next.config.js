@@ -6,14 +6,22 @@ const nextConfig = {
     domains: ['images.unsplash.com'],
     unoptimized: true
   },
-  // 添加重写规则
+  // 配置基本路径
+  basePath: '',
+  // 配置资源前缀
+  assetPrefix: '',
+  // 配置重写规则
   async rewrites() {
-    return [
-      {
-        source: '/:path*',
-        destination: '/:path*',
-      },
-    ]
+    return {
+      beforeFiles: [
+        {
+          source: '/:path*',
+          destination: '/:path*',
+        }
+      ],
+      afterFiles: [],
+      fallback: []
+    }
   }
 }
 
