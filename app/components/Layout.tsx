@@ -16,9 +16,24 @@ import {
 } from '@ant-design/icons';
 import Image from 'next/image';
 import ChatComponent from './Chat';
+import FileRecognitionModal from './FileRecognitionModal';
+import DocumentComparisonModal from './DocumentComparisonModal';
 import { useRouter } from 'next/navigation';
 
 const { Sider, Content } = Layout;
+
+interface Message {
+  id: string;
+  content: string;
+  role: 'user' | 'assistant';
+  onButtonClick?: {
+    [key: string]: () => void;
+  };
+}
+
+interface DemoScene {
+  messages: Message[];
+}
 
 // 模拟历史对话数据
 const historyChats = [
@@ -34,10 +49,12 @@ const MainLayout: React.FC = () => {
   const [currentMode, setCurrentMode] = React.useState<'fullscreen' | 'dialog'>('fullscreen');
   const [popoverVisible, setPopoverVisible] = React.useState(false);
   const [demoScene, setDemoScene] = React.useState<string | null>(null);
+  const [recognitionModalVisible, setRecognitionModalVisible] = React.useState(false);
+  const [comparisonModalVisible, setComparisonModalVisible] = React.useState(false);
   const router = useRouter();
 
   // 预设的演示场景数据
-  const demoScenes = {
+  const demoScenes: Record<string, DemoScene> = {
     orderInfo: {
       messages: [
         {
@@ -742,68 +759,31 @@ ETD：2025-02-05
       messages: [
         {
           id: '1',
-          content: '请帮我识别这份提单文件',
-          role: 'user' as const,
-          files: [
-            {
-              uid: '1',
-              name: 'bill_of_lading.pdf',
-              status: 'done',
-              url: '#'
-            }
-          ]
+          content: '开始AI对单',
+          role: 'user' as const
         },
         {
           id: '2',
-          content: `📄 已完成文件识别，解析结果如下：
-
-📋 提单基本信息
-=====================================
-提单号：MBLHKG123456
-船公司：COSCO Shipping
-起运港：Hong Kong (HKG)
-目的港：Los Angeles (LAX)
-船名/航次：COSCO SHIPPING PISCES V.045E
-
-📦 货物信息
-=====================================
-品名：Electronic Components
-数量：150 Cartons
-毛重：2,500 KGS
-体积：12.5 CBM
-装箱方式：FCL
-集装箱号：CSLU1234567 (1×40HQ)
-
-👥 相关方信息
-=====================================
-发货人：ABC Electronics Limited
-• 地址：Unit 1201-1202, 12/F, Technology Park, 18 Science Street, Kowloon, Hong Kong
-• 电话：+852 2345 6789
-• 邮箱：shipping@abcelectronics.com
-• 联系人：John Chen
-
-收货人：XYZ Trading Corp.
-• 地址：2500 Marina Boulevard, Suite 300, Los Angeles, CA 90007, USA
-• 电话：+1 213 555 0123
-• 邮箱：receiving@xyztrading.com
-• 联系人：Sarah Johnson
-
-通知方：XYZ Trading Corp.
-• 地址：2500 Marina Boulevard, Suite 300, Los Angeles, CA 90007, USA
-• 电话：+1 213 555 0123
-• 邮箱：notify@xyztrading.com
-• 联系人：Mike Williams
-
-📝 备注事项
-=====================================
-• 运费条款：PREPAID
-• 签发日期：2024-03-25
-• 货物已装船
-• 正本提单份数：3/3
-
-💡 温馨提示：
-您可以继续上传文件开始一票新的识别，或【[导出当前信息](javascript:void(0))】`,
+          content: '您当前尚未打开订单详情，请告诉我需要核对的单号和业务类型哦，例如 SHSE123456 的MBL',
           role: 'assistant' as const
+        },
+        {
+          id: '3',
+          content: '开始AI对单',
+          role: 'user' as const
+        },
+        {
+          id: '4',
+          content: `沃宝识别到您目前处于SHSE123456的HBL页签，你是想对此页签数据进行识别核对吗？或者你也可以告诉我其他你要核对的单号和业务类型哦，例如 SHSE123456 的MBL
+
+💡 请选择：
+• 点击【[上传文件](javascript:void(0))】选择要识别的文件
+• 点击【[重新开启对话](javascript:void(0))】重新开始`,
+          role: 'assistant' as const,
+          onButtonClick: {
+            '上传文件': () => setRecognitionModalVisible(true),
+            '重新开启对话': () => setDemoScene(null)
+          }
         }
       ]
     },
@@ -868,6 +848,29 @@ ETD：2025-02-05
 
   const handleDemoClick = (scene: string) => {
     setDemoScene(scene);
+    const messages = scene === 'orderInfo' 
+      ? demoScenes.orderInfo.messages 
+      : scene === 'fileRecognition'
+      ? demoScenes.fileRecognition.messages
+      : [];
+    
+    // 触发模拟聊天事件
+    const event = new CustomEvent('simulate-chat', { detail: messages });
+    window.dispatchEvent(event);
+  };
+
+  const handleNavButtonClick = (text: string) => {
+    switch (text) {
+      case '订单操作':
+        handleDemoClick('orderInfo');
+        break;
+      case '文件识别':
+        handleDemoClick('fileRecognition');
+        break;
+      // 其他按钮的处理...
+      default:
+        break;
+    }
   };
 
   const modeContent = (
@@ -943,6 +946,15 @@ ETD：2025-02-05
       </button>
     </div>
   );
+
+  const handleUploadFile = () => {
+    setRecognitionModalVisible(true);
+  };
+
+  const handleRecognitionComplete = () => {
+    setRecognitionModalVisible(false);
+    setComparisonModalVisible(true);
+  };
 
   return (
     <Layout style={{ minHeight: '100vh' }}>
@@ -1095,9 +1107,26 @@ ETD：2025-02-05
           <ChatComponent 
             initialMessages={demoScene ? demoScenes[demoScene as keyof typeof demoScenes].messages : undefined}
             onReset={() => setDemoScene(null)}
+            onButtonClick={(buttonText, message) => {
+              if (message.onButtonClick && message.onButtonClick[buttonText]) {
+                message.onButtonClick[buttonText]();
+              }
+            }}
           />
         </Content>
       </Layout>
+
+      {/* 文件识别加载弹窗 */}
+      <FileRecognitionModal
+        visible={recognitionModalVisible}
+        onComplete={handleRecognitionComplete}
+      />
+
+      {/* 对单弹窗 */}
+      <DocumentComparisonModal
+        visible={comparisonModalVisible}
+        onClose={() => setComparisonModalVisible(false)}
+      />
     </Layout>
   );
 };

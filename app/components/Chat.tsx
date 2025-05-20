@@ -12,6 +12,9 @@ interface Message {
   role: 'user' | 'assistant';
   isThinking?: boolean;
   files?: UploadFile[];
+  onButtonClick?: {
+    [key: string]: () => void;
+  };
 }
 
 interface TopicCard {
@@ -85,6 +88,7 @@ const navButtons = [
 interface Props {
   onReset: () => void;
   initialMessages?: Message[];
+  onButtonClick?: (buttonText: string, message: Message) => void;
 }
 
 const { TextArea } = Input;
@@ -98,7 +102,7 @@ const moduleOptions = [
   { label: '其他', value: 'others' }
 ];
 
-const ChatComponent: React.FC<Props> = ({ onReset, initialMessages }) => {
+const ChatComponent: React.FC<Props> = ({ onReset, initialMessages, onButtonClick }) => {
   const router = useRouter();
   const [messages, setMessages] = React.useState<Message[]>(initialMessages || [
     {
@@ -317,13 +321,28 @@ const ChatComponent: React.FC<Props> = ({ onReset, initialMessages }) => {
     window.open(`/docs?topic=${encodeURIComponent(title)}`, '_blank');
   };
 
+  const handleMessageClick = (e: React.MouseEvent<HTMLDivElement>) => {
+    const target = e.target as HTMLElement;
+    if (target.tagName === 'A' && target.textContent) {
+      const buttonText = target.textContent.replace(/[【】\[\]]/g, '');
+      const messageId = target.closest('[data-message-id]')?.getAttribute('data-message-id');
+      const message = messages.find(m => m.id === messageId);
+      
+      if (message && onButtonClick) {
+        e.preventDefault();
+        onButtonClick(buttonText, message);
+      }
+    }
+  };
+
   return (
     <>
       <div className="flex flex-col h-[calc(100vh-32px)] max-w-6xl mx-auto bg-white rounded-xl shadow-sm">
-        <div className="flex-1 overflow-auto p-6">
+        <div className="flex-1 overflow-auto p-6" onClick={handleMessageClick}>
           {messages.map((message) => (
             <div
               key={message.id}
+              data-message-id={message.id}
               className={`flex ${message.role === 'user' ? 'justify-end' : 'justify-start'} mb-6`}
             >
               <div className={`flex ${message.role === 'user' ? 'flex-row-reverse' : 'flex-row'} items-start gap-4 max-w-[90%]`}>

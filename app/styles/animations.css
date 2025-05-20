@@ -1,0 +1,42 @@
+@keyframes float {
+  0%, 100% {
+    transform: translateY(0);
+  }
+  50% {
+    transform: translateY(-10px);
+  }
+}
+
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+}
+
+.animate-float {
+  animation: float 3s ease-in-out infinite;
+}
+
+.animate-fade-in {
+  animation: fadeIn 0.5s ease-in-out;
+}
+
+/* 弹窗样式 */
+.recognition-modal .ant-modal-content {
+  background: #ffffff;
+  border-radius: 16px;
+  box-shadow: 0 4px 32px rgba(0, 0, 0, 0.1);
+}
+
+.document-comparison-modal .ant-modal-content {
+  background: #ffffff;
+  border-radius: 16px;
+  padding: 24px;
+}
+
+.document-comparison-modal .ant-modal-body {
+  padding: 0;
+} 
