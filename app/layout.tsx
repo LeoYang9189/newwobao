@@ -1,5 +1,6 @@
 import type { Metadata } from "next";
 import "./styles/globals.css";
+import "./styles/document-comparison.css";
 
 export const metadata: Metadata = {
   title: "AI沃宝 - 智能物流助手",

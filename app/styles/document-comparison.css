@@ -1,0 +1,52 @@
+/* 文档对比弹窗样式 */
+.document-comparison-modal .ant-modal-content {
+  padding: 24px;
+  border-radius: 8px;
+}
+
+.document-comparison-modal .ant-modal-body {
+  padding: 0;
+}
+
+/* 滚动条样式 */
+.document-comparison-modal .overflow-auto::-webkit-scrollbar {
+  width: 6px;
+  height: 6px;
+}
+
+.document-comparison-modal .overflow-auto::-webkit-scrollbar-track {
+  background: #f1f1f1;
+  border-radius: 3px;
+}
+
+.document-comparison-modal .overflow-auto::-webkit-scrollbar-thumb {
+  background: #888;
+  border-radius: 3px;
+}
+
+.document-comparison-modal .overflow-auto::-webkit-scrollbar-thumb:hover {
+  background: #555;
+}
+
+/* 字段卡片样式 */
+.field-card {
+  transition: all 0.3s ease;
+}
+
+.field-card:hover {
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+}
+
+/* 差异字段高亮 */
+.field-different {
+  animation: highlight 2s ease-in-out infinite;
+}
+
+@keyframes highlight {
+  0%, 100% {
+    background-color: rgba(255, 0, 0, 0.05);
+  }
+  50% {
+    background-color: rgba(255, 0, 0, 0.1);
+  }
+} 
